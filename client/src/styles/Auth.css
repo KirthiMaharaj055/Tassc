@@ -1,0 +1,57 @@
+.auth-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.auth-container h2 {
+  margin-bottom: 10px;
+}
+
+.auth-container p {
+  margin-bottom: 20px;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container label {
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.auth-container input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #aabdc6;
+  border-radius: 5px;
+}
+
+.auth-container .auth-options {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.auth-container button {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.auth-container .google-login {
+  background-color: #4285F4;
+  color: rgb(55, 151, 172);
+}
+
+.auth-container a {
+  color: #4285F4;
+  text-decoration: none;
+}
