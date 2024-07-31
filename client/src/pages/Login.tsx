@@ -22,7 +22,7 @@ const Login: React.FC = () => {
     <div className="auth-container">
       <h2>Login</h2>
       <p>Enter your email below to login to your account</p>
-      <form onSubmit={handleSubmit}>
+     <form onSubmit={handleSubmit}>
         <label>Email</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="m@example.com" required />
         
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
         </div>
         
         <button type="submit">Login</button>
-        <button type="button" className="google-login">Login with Google</button>
+        
       </form>
       <p>
         Don't have an account? <a href="/register">Sign up</a>

@@ -28,7 +28,7 @@
 .auth-container input {
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #aabdc6;
   border-radius: 5px;
 }
 
@@ -48,7 +48,7 @@
 
 .auth-container .google-login {
   background-color: #4285F4;
-  color: white;
+  color: rgb(55, 151, 172);
 }
 
 .auth-container a {

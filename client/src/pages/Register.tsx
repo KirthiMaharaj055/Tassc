@@ -33,7 +33,7 @@ const Register: React.FC = () => {
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="m@example.com" required />
         
         <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' required />
         
         <button type="submit">Register</button>
         </form>
