@@ -4,8 +4,8 @@
     "server": "ts-node-dev --transpileOnly --ignore-watch node_modules server/server.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "ts-node-dev": "^2.0.0"
   }
 }

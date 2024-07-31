@@ -1,5 +1,5 @@
 import API from './api';
-
+import axios from 'axios';
 interface AuthData {
   email: string;
   password: string;
