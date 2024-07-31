@@ -6,16 +6,18 @@ import '../styles/Auth.css';
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const nagivate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await login({ email, password });
-      nagivate('/tasks');
+      navigate('/tasks');
+      //navigate('/api/tasks'); 
     } catch (error) {
+      console.error('Login error:', error);
       alert('Login failed');
-    }
+    }    
   };
 
   return (

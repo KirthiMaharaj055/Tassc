@@ -1,12 +1,13 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import auth from '../middleware/auth';
+import auth, { AuthRequest } from '../middleware/auth';
 import Task from '../models/Task';
+import { getTasks, createTask, updateTask, deleteTask } from '../controllers/taskController';
 
 const router = express.Router();
 
 // Get all tasks
-router.get('/', auth, async (req: Request, res: Response) => {
+router.get('/', auth, async (req: AuthRequest, res: Response) => {
   try {
     const tasks = await Task.find({ user: req.user!.id });
     res.json(tasks);
@@ -23,7 +24,7 @@ router.post(
     auth,
     body('title', 'Title is required').not().isEmpty(),
   ],
-  async (req: Request, res: Response) => {
+  async (req: AuthRequest, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -50,7 +51,7 @@ router.post(
 );
 
 // Update task
-router.put('/:id', auth, async (req: Request, res: Response) => {
+router.put('/:id', auth, async (req: AuthRequest, res: Response) => {
   const { title, description, status, dueDate } = req.body;
 
   // Build task object
@@ -73,7 +74,7 @@ router.put('/:id', auth, async (req: Request, res: Response) => {
 });
 
 // Delete task
-router.delete('/:id', auth, async (req: Request, res: Response) => {
+router.delete('/:id', auth, async (req: AuthRequest, res: Response) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ msg: 'Task not found' });

@@ -15,6 +15,7 @@ const Register: React.FC = () => {
     try {
       await axios.post('/api/auth/register', { name, email, password });
       navigate('/login');
+      //navigate('/api/login');
     } catch (error) {
       console.error(error);
     }
@@ -27,7 +28,7 @@ const Register: React.FC = () => {
         <form onSubmit={handleSubmit} className="auth-form">
 
         <label>Name</label> 
-        <input type="Name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
 
         <label>Email</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="m@example.com" required />

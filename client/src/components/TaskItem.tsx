@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/TaskItem.css';
+import { fetchTasks, updateTask } from '../services/tasks';
 
 interface TaskItemProps {
   task: {
@@ -14,6 +15,11 @@ interface TaskItemProps {
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdateStatus, onDelete }) => {
+  const toggleStatus = () => {
+    const newStatus = task.status === 'pending' ? 'completed' : 'pending';
+    onUpdateStatus(task._id, newStatus);
+  };
+
   return (
     <tr className={`task-item ${task.status}`}>
       <td>{task.title}</td>
@@ -21,7 +27,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdateStatus, onDelete }) =
       <td>{task.status}</td>
       <td>{task.dueDate?.toLocaleDateString()}</td>
       <td className="task-actions">
-        <button onClick={() => onUpdateStatus(task._id, task.status === 'pending' ? 'completed' : 'pending')}>
+        <button onClick={toggleStatus}>
           {task.status === 'pending' ? 'Complete' : 'Undo'}
         </button>
         <button onClick={() => onDelete(task._id)}>Delete</button>

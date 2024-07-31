@@ -6,9 +6,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Implement your logout logic here.
-    // For example, remove the token from localStorage.
-   localStorage.removeItem('token');
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
@@ -24,5 +22,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
-
+export default Navbar

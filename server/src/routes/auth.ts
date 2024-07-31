@@ -1,64 +1,42 @@
 import express, { Request, Response } from 'express';
+import { body, validationResult } from 'express-validator';
+import { registerUser, loginUser } from '../controllers/authController';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 const router = express.Router();
 
-// Register user
-router.post('/register', async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
+router.post(
+  '/register',
+  [
+    body('name', 'Name is required').not().isEmpty(),
+    body('email', 'Please include a valid email').isEmail(),
+    body('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
+  ],
+  (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    await newUser.save();
-
-    const payload = { user: { id: newUser.id } };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (err: any) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    registerUser(req, res);
   }
-});
+);
 
-// Login user
-router.post('/login', async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+router.post(
+  '/login',
+  [
+    body('email', 'Please include a valid email').isEmail(),
+    body('password', 'Password is required').exists(),
+  ],
+  (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    const payload = { user: { id: user.id } };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (err: any) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    loginUser(req, res);
   }
-});
+);
 
 export default router;
+
