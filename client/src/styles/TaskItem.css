@@ -1,0 +1,23 @@
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .task-item.completed {
+    background-color: #d4edda;
+  }
+  
+  .task-item.pending {
+    background-color: #f8d7da;
+  }
+  
+  .task-actions button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
