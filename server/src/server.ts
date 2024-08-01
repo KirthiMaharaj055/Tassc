@@ -6,7 +6,13 @@ import path from 'path';
 import authRoutes from './routes/auth';
 import taskRoutes from './routes/tasks';
 
-dotenv.config();
+dotenv.config({ path: './server/.env' });
+
+console.log('Loaded environment variables:', {
+  MONGO_URI: process.env.MONGO_URI,
+  PORT: process.env.PORT,
+  JWT_SECRET: process.env.JWT_SECRET
+}); 
 
 const app = express();
 
