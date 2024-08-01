@@ -16,7 +16,7 @@ interface TaskData {
   dueDate?: Date;
 }
 
-const API_URL = '/api/tasks'; 
+const API_URL = '/tasks'; ///api/tasks
 
 // // Function to fetch tasks from the API
 // export const fetchTasks = async (): Promise<Task[]> => {

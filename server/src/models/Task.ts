@@ -20,40 +20,33 @@
 //   updatedAt: { type: Date, default: Date.now }
 // });
 
-// export default model<ITask>('Task', TaskSchema);
-import mongoose, { Document, Schema } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-export interface ITask extends Document {
-  title: string;
-  description?: string;
-  status: string;
-  dueDate?: Date;
-  user: mongoose.Schema.Types.ObjectId;
-}
-
-const taskSchema: Schema = new Schema({
+// Define the Task schema
+const taskSchema = new Schema({
   title: {
     type: String,
     required: true,
   },
   description: {
     type: String,
-  },
-  status: {
-    type: String,
-    required: true,
-    enum: ['pending', 'in progress', 'completed'],
-  },
-  dueDate: {
-    type: Date,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
     required: true,
   },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true } // Ensure this field is present
+}, {
+  timestamps: true,
 });
 
-const Task = mongoose.model<ITask>('Task', taskSchema);
+// Define the TypeScript interface for Task
+interface ITask extends Document {
+  title: string;
+  description: string;
+  completed: boolean;
+  user: Schema.Types.ObjectId; // Use ObjectId type here
+}
 
-export default Task;
+export default model<ITask>('Task', taskSchema);

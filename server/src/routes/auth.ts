@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Registration route
 router.post(
-  '/api/auth/register',
+  '/register',
   [
     body('name', 'Name is required').not().isEmpty(),
     body('email', 'Please include a valid email').isEmail(),
@@ -23,7 +23,7 @@ router.post(
 
 // Login route
 router.post(
-  '/api/auth/login',
+  '/login',
   [
     body('email', 'Please include a valid email').isEmail(),
     body('password', 'Password is required').exists(),

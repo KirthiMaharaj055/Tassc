@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import auth, { AuthRequest } from '../middleware/auth';
 import Task from '../models/Task';
@@ -19,7 +19,7 @@ router.get('/', auth, async (req: AuthRequest, res: Response) => {
 
 // Create a new task
 router.post(
-  '/',
+  '/tasks',
   [
     auth,
     body('title', 'Title is required').not().isEmpty(),
@@ -90,5 +90,7 @@ router.delete('/:id', auth, async (req: AuthRequest, res: Response) => {
     res.status(500).send('Server error');
   }
 });
+
+router.use(auth);
 
 export default router;

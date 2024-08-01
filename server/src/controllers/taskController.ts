@@ -49,6 +49,7 @@ export const updateTask = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
+
 export const deleteTask = async (req: AuthRequest, res: Response): Promise<void> => {
   const { id } = req.params;
   try {
