@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
 import TaskItem from '../components/TaskItem';
 import { getTasks, createTask, updateTask, deleteTask } from '../services/tasks';
 import '../styles/TaskManager.css';
@@ -20,6 +19,7 @@ const TaskManager = () => {
   const fetchTasks = async () => {
     try {
       const tasks = await getTasks();
+      console.log('Fetched tasks:', tasks); // Log tasks to verify structure
       setTasks(tasks);
     } catch (error) {
       console.error('Error fetching tasks:', error);
@@ -71,7 +71,7 @@ const TaskManager = () => {
 
   return (
     <div>
-      <Navbar />
+      
       <div className="task-manager-container">
         <h2>Tasks</h2>
         <div className="task-input">

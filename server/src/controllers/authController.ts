@@ -1,51 +1,89 @@
 import { Request, Response } from 'express';
-import User from '../models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import User from '../models/User';
 
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
+
+export const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
+
   try {
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      res.status(400).json({ message: 'User already exists' });
-      return;
+    // Check if the user already exists
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
+
+    // Create a new user instance
+    user = new User({
+      name,
+      email,
+      password
+    });
+
+    // Hash the password
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const user = new User({ name, email, password: hashedPassword });
+    user.password = await bcrypt.hash(password, salt);
+
+    // Save the user to the database
     await user.save();
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    res.status(201).json({ token });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'An unknown error occurred' });
-    }
+
+    // Create a payload for the JWT
+    const payload = {
+      user: {
+        id: user.id
+      }
+    };
+
+    // Sign the JWT and send it to the client
+    jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+      if (err) {
+        console.error((err as Error).message);
+        return res.status(500).send('Server error');
+      }
+      res.json({ token });
+    });
+  } catch (err) {
+    console.error((err as Error).message);
+    res.status(500).send('Server error');
   }
 };
 
-export const loginUser = async (req: Request, res: Response): Promise<void> => {
+export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+
   try {
-    const user = await User.findOne({ email });
+    // Check if the user exists
+    let user = await User.findOne({ email });
     if (!user) {
-      res.status(400).json({ message: 'Invalid credentials' });
-      return;
+      return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
     }
+
+    // Compare the password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(400).json({ message: 'Invalid credentials' });
-      return;
+      return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
     }
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    res.status(200).json({ token });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'An unknown error occurred' });
-    }
+
+    // Create a payload for the JWT
+    const payload = {
+      user: {
+        id: user.id
+      }
+    };
+
+    // Sign the JWT and send it to the client
+    jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+      if (err) {
+        console.error((err as Error).message);
+        return res.status(500).send('Server error');
+      }
+      res.json({ token });
+    });
+  } catch (err) {
+    console.error((err as Error).message);
+    res.status(500).send('Server error');
   }
 };
+

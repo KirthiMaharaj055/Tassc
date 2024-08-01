@@ -1,5 +1,5 @@
 import axios from 'axios';
-import API from './api'; // Assuming you have a configured Axios instance
+import API from './api'; 
 
 interface Task {
   _id: string;
@@ -17,17 +17,31 @@ interface TaskData {
 }
 
 const API_URL = '/api/tasks'; 
+
+// // Function to fetch tasks from the API
+// export const fetchTasks = async (): Promise<Task[]> => {
+//   try {
+//     //const res = await API.get('/tasks');
+//     const res = await axios.get(API_URL);
+//     return res.data;
+//   } catch (err) {
+//     console.error('Error fetching tasks:', err);
+//     throw err;
+//   }
+// };
+
 // Function to fetch tasks from the API
 export const fetchTasks = async (): Promise<Task[]> => {
   try {
-    //const res = await API.get('/tasks');
     const res = await axios.get(API_URL);
-    return res.data;
+    // Ensure the response data is an array
+    return Array.isArray(res.data) ? res.data : [];
   } catch (err) {
     console.error('Error fetching tasks:', err);
     throw err;
   }
 };
+
 
 // Other API functions
 export const getTasks = async (): Promise<Task[]> => {

@@ -1,40 +1,39 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { registerUser, loginUser } from '../controllers/authController';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import User from '../models/User';
 
 const router = express.Router();
 
+// Registration route
 router.post(
-  '/register',
+  '/api/auth/register',
   [
     body('name', 'Name is required').not().isEmpty(),
     body('email', 'Please include a valid email').isEmail(),
     body('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    registerUser(req, res);
+    await registerUser(req, res);
   }
 );
 
+// Login route
 router.post(
-  '/login',
+  '/api/auth/login',
   [
     body('email', 'Please include a valid email').isEmail(),
     body('password', 'Password is required').exists(),
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    loginUser(req, res);
+    await loginUser(req, res);
   }
 );
 
