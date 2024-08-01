@@ -1,7 +1,8 @@
-import express, { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator'; 
+import express, { NextFunction, Request, Response } from 'express';
+import { body, validationResult } from 'express-validator';
 import auth, { AuthRequest } from '../middleware/auth';
-import Task, { ITask } from '../models/Task';
+import Task from '../models/Task';
+import { getTasks, createTask, updateTask, deleteTask } from '../controllers/taskController';
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get('/', auth, async (req: AuthRequest, res: Response) => {
   }
 });
 
-// Create new task
+// Create a new task
 router.post(
   '/',
   [
@@ -54,28 +55,17 @@ router.put('/:id', auth, async (req: AuthRequest, res: Response) => {
   const { title, description, status, dueDate } = req.body;
 
   // Build task object
-  const taskFields: Partial<ITask> = {};
-  if (title) taskFields.title = title;
-  if (description) taskFields.description = description;
-  if (status) taskFields.status = status;
-  if (dueDate) taskFields.dueDate = dueDate;
+  const taskFields = { title, description, status, dueDate, updatedAt: Date.now() };
 
   try {
     let task = await Task.findById(req.params.id);
-
     if (!task) return res.status(404).json({ msg: 'Task not found' });
 
-    // Ensure user owns task
     if (task.user.toString() !== req.user!.id) {
       return res.status(401).json({ msg: 'Not authorized' });
     }
 
-    task = await Task.findByIdAndUpdate(
-      req.params.id,
-      { $set: taskFields },
-      { new: true }
-    );
-
+    task = await Task.findByIdAndUpdate(req.params.id, { $set: taskFields }, { new: true });
     res.json(task);
   } catch (err: any) {
     console.error(err.message);
@@ -87,23 +77,20 @@ router.put('/:id', auth, async (req: AuthRequest, res: Response) => {
 router.delete('/:id', auth, async (req: AuthRequest, res: Response) => {
   try {
     const task = await Task.findById(req.params.id);
+    if (!task) return res.status(404).json({ msg: 'Task not found' });
 
-    if (!task) {
-      return res.status(404).json({ msg: 'Task not found' });
-    }
-
-    // Ensure user owns task
     if (task.user.toString() !== req.user!.id) {
       return res.status(401).json({ msg: 'Not authorized' });
     }
 
-    await Task.deleteOne({ _id: req.params.id });
-
+    await Task.findByIdAndDelete(req.params.id);
     res.json({ msg: 'Task removed' });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 });
+
+router.use(auth);
 
 export default router;

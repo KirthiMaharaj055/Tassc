@@ -13,7 +13,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/tasks" element={<TaskManager />} />
-        <Route path="/" element={<Login />}  />
+        <Route path="*" element={<Login />}  /> 
       </Routes>
       </div>
     </Router>
@@ -21,3 +21,4 @@ const App: React.FC = () => {
 };
 
 export default App
+

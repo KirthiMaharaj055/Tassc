@@ -1,33 +1,29 @@
-// import { Schema, model, Document } from 'mongoose';
+// import mongoose, { Document, Schema } from 'mongoose';
 
-// interface IUser extends Document {
+// export interface IUser extends Document {
 //   name: string;
 //   email: string;
 //   password: string;
-//   createdAt: Date;
+//   // Add other user properties as needed
 // }
 
 // const UserSchema: Schema = new Schema({
 //   name: { type: String, required: true },
 //   email: { type: String, required: true, unique: true },
 //   password: { type: String, required: true },
-//   createdAt: { type: Date, default: Date.now }
+//   // Add other user properties as needed
 // });
 
-// export default model<IUser>('User', UserSchema);
-import mongoose, { Document, Schema } from 'mongoose';
+// const User = mongoose.model<IUser>('User', UserSchema);
 
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
-}
+// export default User;
 
-const userSchema: Schema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
+
+import { Schema, model, Document } from 'mongoose';
+import bcrypt from 'bcrypt'; // Ensure bcrypt is installed and imported correctly
+
+// Define the User schema
+const userSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -37,8 +33,34 @@ const userSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+}, {
+  timestamps: true,
 });
 
-const User = mongoose.model<IUser>('User', userSchema);
+// Pre-save hook to hash the password before saving
+userSchema.pre<IUser>('save', async function (next) {
+  if (this.isModified('password')) {
+    try {
+      const hashedPassword = await bcrypt.hash(this.password, 10);
+      this.password = hashedPassword;
+    } catch (error) {
+      return next(error as any); // Cast error to 'any' to satisfy TypeScript
+    }
+  }
+  next();
+});
 
-export default User;
+// Define the TypeScript interface for User
+interface IUser extends Document {
+  email: string;
+  password: string;
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
+
+// Method to compare passwords
+userSchema.methods.comparePassword = async function (candidatePassword: string) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
+export default model<IUser>('User', userSchema);
+

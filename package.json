@@ -1,0 +1,31 @@
+{
+  "name": "tassc",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "webpack:serve": "webpack serve --config webpack.config.ts",
+    "client": "npm start --prefix client",
+    "server": "npx cross-env ts-node-dev --ignore-watch node_modules server/src/server.ts",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "compilerOptions": {
+    "transpileOnly": true
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/webpack": "^5.28.5",
+    "@types/webpack-dev-server": "^4.7.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.4",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4",
+    "webpack-merge": "^6.0.1"
+  }
+}
