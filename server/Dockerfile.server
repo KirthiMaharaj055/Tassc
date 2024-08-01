@@ -17,6 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Command to run the server in development mode
-#CMD ["npm", "run", "dev"]
-
 CMD ["npm", "start"]

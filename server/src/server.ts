@@ -6,13 +6,13 @@ import path from 'path';
 import authRoutes from './routes/auth';
 import taskRoutes from './routes/tasks';
 
-dotenv.config({ path: './server/.env' });
+dotenv.config();
 
 console.log('Loaded environment variables:', {
   MONGO_URI: process.env.MONGO_URI,
   PORT: process.env.PORT,
-  JWT_SECRET: process.env.JWT_SECRET
-}); 
+  JWT_SECRET: process.env.JWT_SECRET,
+});
 
 const app = express();
 
@@ -34,13 +34,13 @@ app.use('/api/tasks', taskRoutes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/build')));
-  
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-    });
+  app.use(express.static(path.join(__dirname, '../client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  });
 }
-  
-const PORT = process.env.PORT || 5000;
-  
+
+const PORT = process.env.PORT || 5001;
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

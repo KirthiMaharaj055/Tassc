@@ -1,5 +1,5 @@
 import API from './api';
-import axios from 'axios';
+
 interface AuthData {
   email: string;
   password: string;
@@ -7,7 +7,7 @@ interface AuthData {
 
 export const login = async (formData: AuthData): Promise<void> => {
   try {
-    const res = await axios.post('/api/auth/login', formData); ///api/auth/login
+    const res = await API.post('/auth/login', formData);
     localStorage.setItem('token', res.data.token);
   } catch (error) {
     console.error('Login error:', error);
@@ -15,20 +15,10 @@ export const login = async (formData: AuthData): Promise<void> => {
   }
 };
 
-
 export const register = async (userData: { name: string; email: string; password: string }) => {
   try {
-    const response = await fetch('/api/auth/register', { //api/auth/register/
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return await response.json();
+    const response = await API.post('/auth/register', userData);
+    return response.data;
   } catch (error) {
     console.error('Error registering user:', error);
     throw error;

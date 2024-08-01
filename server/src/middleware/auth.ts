@@ -15,7 +15,7 @@ const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultSecret') as {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret') as {
       user: {
         id: string;
       };

@@ -6,7 +6,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token'); // Ensure this matches the key used throughout the app
     navigate('/login');
   };
 
@@ -22,4 +22,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar
+export default Navbar;

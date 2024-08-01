@@ -11,16 +11,15 @@ interface Task {
   dueDate?: Date;
 }
 
-const TaskManager = () => {
+const TaskManager: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState<string>('');
   const [newDescription, setNewDescription] = useState<string>('');
 
   const fetchTasks = async () => {
     try {
-      const tasks = await getTasks();
-      console.log('Fetched tasks:', tasks); // Log tasks to verify structure
-      setTasks(tasks);
+      const fetchedTasks = await getTasks();
+      setTasks(fetchedTasks);
     } catch (error) {
       console.error('Error fetching tasks:', error);
       alert('Failed to fetch tasks');
@@ -70,47 +69,44 @@ const TaskManager = () => {
   }, []);
 
   return (
-    <div>
-      
-      <div className="task-manager-container">
-        <h2>Tasks</h2>
-        <div className="task-input">
-          <input
-            type="text"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            placeholder="Task Name"
-          />
-          <input
-            type="text"
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-            placeholder="Description"
-          />
-          <button onClick={handleCreateTask}>Add Task</button>
-        </div>
-        <table className="task-table">
-          <thead>
-            <tr>
-              <th>Task Name</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Due Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map(task => (
-              <TaskItem 
-                key={task._id} 
-                task={task} 
-                onUpdateStatus={(taskId, status) => handleUpdateTask(taskId, status)} 
-                onDelete={handleDeleteTask} 
-              />
-            ))}
-          </tbody>
-        </table>
+    <div className="task-manager-container">
+      <h2>Tasks</h2>
+      <div className="task-input">
+        <input
+          type="text"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          placeholder="Task Name"
+        />
+        <input
+          type="text"
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+          placeholder="Description"
+        />
+        <button onClick={handleCreateTask}>Add Task</button>
       </div>
+      <table className="task-table">
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tasks.map(task => (
+            <TaskItem 
+              key={task._id} 
+              task={task} 
+              onUpdateStatus={handleUpdateTask} 
+              onDelete={handleDeleteTask} 
+            />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

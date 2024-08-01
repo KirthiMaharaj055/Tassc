@@ -1,24 +1,8 @@
-// import axios from 'axios';
-
-// const API = axios.create({
-//   baseURL: 'http://localhost:3000/api', // Update with your API base URL
-// });
-
-// API.interceptors.request.use((req) => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     req.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return req;
-// });
-
-// export default API
-// src/utils/axiosInstance.ts
 import axios from 'axios';
 
 // Create an axios instance with default settings
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api', // Set base URL from environment variables
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api' || 'http://localhost:5000/api', // Set base URL from environment variables
   timeout: 10000, // Optional: Set timeout for requests
 });
 
