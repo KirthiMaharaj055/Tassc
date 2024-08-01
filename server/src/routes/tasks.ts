@@ -19,7 +19,7 @@ router.get('/', auth, async (req: AuthRequest, res: Response) => {
 
 // Create a new task
 router.post(
-  '/tasks',
+  '/',
   [
     auth,
     body('title', 'Title is required').not().isEmpty(),

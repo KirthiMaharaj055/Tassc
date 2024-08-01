@@ -8,10 +8,6 @@
     "start:prod": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
