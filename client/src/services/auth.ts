@@ -5,14 +5,9 @@ interface AuthData {
   password: string;
 }
 
-// export const login = async (formData: AuthData): Promise<void> => {
-//   const res = await API.post('/auth/login', formData);
-//   localStorage.setItem('token', res.data.token);
-// };
-
 export const login = async (formData: AuthData): Promise<void> => {
   try {
-    const res = await axios.post('/auth/login', formData); ///api/auth/login
+    const res = await axios.post('/api/auth/login', formData); ///api/auth/login
     localStorage.setItem('token', res.data.token);
   } catch (error) {
     console.error('Login error:', error);
@@ -20,14 +15,10 @@ export const login = async (formData: AuthData): Promise<void> => {
   }
 };
 
-// export const register = async (formData: AuthData & { name: string }): Promise<void> => {
-//   await API.post('/auth/register', formData);
-// };
 
-// auth.ts
 export const register = async (userData: { name: string; email: string; password: string }) => {
   try {
-    const response = await fetch('/auth/register', { //api/auth/register/
+    const response = await fetch('/api/auth/register', { //api/auth/register/
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
