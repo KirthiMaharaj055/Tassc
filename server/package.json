@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/server.ts",
+    "server": "ts-node-dev src/server.ts",
     "build": "tsc",
-    "start:prod": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
-    "connect": "^3.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -37,8 +35,6 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.5.4",
-    "webpack": "^5.93.0",
-    "webpack-cli": "^5.1.4"
+    "typescript": "^5.5.4"
   }
 }
