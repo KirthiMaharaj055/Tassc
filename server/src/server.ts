@@ -77,12 +77,18 @@ app.use(cors({
   credentials: true, // If you need to send cookies or HTTP authentication headers
 }));
 
+app.options('*', cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
+
+
 app.get('/', (req, res) => res.send('API Running'));
 
-app.post('/api/auth/register', (req, res) => {
-  // Your registration logic here
-  res.send('Register endpoint');
-});
+// app.post('/api/auth/register', (req, res) => {
+//   // Your registration logic here
+//   res.send('Register endpoint');
+// });
 
 // Define Routes
 app.use('/api/auth', authRoutes);
@@ -98,3 +104,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
