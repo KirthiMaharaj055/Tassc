@@ -8,6 +8,7 @@ API.interceptors.request.use((req) => {
   const token = localStorage.getItem('token');
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
+    console.log('Authorization Header:', req.headers.Authorization); // Debugging: Log the header
   }
   return req;
 });

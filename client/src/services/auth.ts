@@ -19,6 +19,7 @@ export const login = async (formData: AuthData): Promise<void> => {
   try {
     const res = await API.post('/auth/login', formData);
     localStorage.setItem('token', res.data.token);
+    console.log('Token stored:', localStorage.getItem('token')); // Debugging: Log the token
   } catch (error) {
     console.error('Login error:', error);
     throw error; // Re-throw the error for handling in the calling function
