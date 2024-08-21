@@ -17,8 +17,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    //res.send('Register endpoint');
-
+    
     // Call the registerUser function
     await registerUser(req, res);
   }
@@ -39,8 +38,6 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     
-   // res.send('Login endpoint');
-
     // Call the loginUser function
     await loginUser(req, res);
   }

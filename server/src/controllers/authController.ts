@@ -82,14 +82,12 @@ export const loginUser = async (req: Request, res: Response) => {
     // Sign the JWT and return it to the client
     jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) {
-        console.error(err.message);
         console.error("JWT Error:", err.message);
         return res.status(500).send('Server error'); // Ensure function exits here
       }
       return res.json({ token }); // Use return to prevent further execution
     });
   } catch (err) {
-   // console.error((err as Error).message);
     console.error("Login error:", (err as Error).message);
     return res.status(500).send('Server error'); // Use return to prevent further execution
   }
