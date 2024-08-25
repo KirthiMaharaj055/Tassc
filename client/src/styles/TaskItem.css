@@ -32,3 +32,22 @@
 .task-actions .dropdown-menu li:hover {
   background-color: #f0f0f0;
 }
+
+.task-item .status-completed {
+  color: green;
+  font-weight: bold;
+}
+
+.task-item .status-incomplete {
+  color: red;
+  font-weight: bold;
+}
+
+/* Additional CSS to style the select input */
+.task-item select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+

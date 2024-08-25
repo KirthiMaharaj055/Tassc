@@ -40,11 +40,25 @@ const TaskManager: React.FC = () => {
     }
   };
 
-  const handleUpdateTask = (id: string, updatedTask: { title: string; description: string; dueDate: Date }) => {
-    const updatedTasks = tasks.map(task =>
-      task._id === id ? { ...task, ...updatedTask } : task
-    );
-    setTasks(updatedTasks);
+  // const handleUpdateTask = (id: string, updatedTask: { title: string; description: string; status: string; dueDate: Date }) => {
+  //   setTasks((prevTasks) =>
+  //     prevTasks.map((task) =>
+  //       task._id === id ? { ...task, ...updatedTask } : task
+  //     )
+  //   );
+  // };
+
+  const handleUpdateTask = async (taskId: string, updatedTask: { title: string; description: string; status: string; dueDate: Date }) => {
+    try {
+      const task = tasks.find(t => t._id === taskId);
+      if (task) {
+        await updateTask(taskId, updatedTask);
+        fetchTasks(); // Refresh task list after update
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+      alert('Failed to update task');
+    }
   };
 
   const handleDeleteTask = async (taskId: string) => {
@@ -92,11 +106,11 @@ const TaskManager: React.FC = () => {
         <tbody>
           {tasks.map(task => (
             <TaskItem
-              key={task._id}
-              task={task}
-              onUpdateTask={handleUpdateTask}
-              onDelete={handleDeleteTask}
-            />
+            key={task._id}
+            task={task}
+            onUpdateTask={handleUpdateTask}
+            onDelete={handleDeleteTask}
+          />
           ))}
         </tbody>
       </table>

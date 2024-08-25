@@ -6,10 +6,10 @@ interface TaskItemProps {
     _id: string;
     title: string;
     description?: string;
-    status: string;
+    status: string; // Expecting values like 'Completed' or 'Incomplete'
     dueDate?: Date;
   };
-  onUpdateTask: (id: string, updatedTask: { title: string; description: string; dueDate: Date }) => void;
+  onUpdateTask: (id: string, updatedTask: { title: string; description: string; status: string; dueDate: Date }) => void;
   onDelete: (id: string) => void;
 }
 
@@ -18,6 +18,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdateTask, onDelete }) => 
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDescription, setEditDescription] = useState(task.description || '');
+  const [editStatus, setEditStatus] = useState(task.status);
   const [editDueDate, setEditDueDate] = useState(task.dueDate ? new Date(task.dueDate).toISOString().substring(0, 10) : '');
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -27,11 +28,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdateTask, onDelete }) => 
     const updatedTask = {
       title: editTitle,
       description: editDescription,
+      status: editStatus,
       dueDate: editDueDate ? new Date(editDueDate) : new Date(),
     };
     onUpdateTask(task._id, updatedTask);
     setIsEditing(false);
   };
+
+  const statusClass = task.status === 'Completed' ? 'status-completed' : 'status-incomplete';
 
   return (
     <tr className="task-item">
@@ -51,7 +55,16 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdateTask, onDelete }) => 
               onChange={(e) => setEditDescription(e.target.value)}
             />
           </td>
-          <td>{task.status}</td>
+          <td>
+            <select
+              value={editStatus}
+              onChange={(e) => setEditStatus(e.target.value)}
+              className={statusClass}
+            >
+              <option value="Completed">Completed</option>
+              <option value="Incomplete">Incomplete</option>
+            </select>
+          </td>
           <td>
             <input
               type="date"
@@ -68,7 +81,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdateTask, onDelete }) => 
         <>
           <td>{task.title}</td>
           <td>{task.description}</td>
-          <td>{task.status}</td>
+          <td className={statusClass}>{task.status}</td>
           <td>{task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'N/A'}</td>
           <td className="task-actions">
             <div className="dropdown">
