@@ -1,8 +1,16 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt'; // Ensure bcrypt is installed and imported correctly
 
+
+// Define the TypeScript interface for User
+interface IUser extends Document {
+  email: string;
+  password: string;
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
+
 // Define the User schema
-const userSchema = new Schema({
+const userSchema = new Schema<IUser>({
   email: {
     type: String,
     required: true,
@@ -15,26 +23,6 @@ const userSchema = new Schema({
 }, {
   timestamps: true,
 });
-
-// Pre-save hook to hash the password before saving
-userSchema.pre<IUser>('save', async function (next) {
-  if (this.isModified('password')) {
-    try {
-      const hashedPassword = await bcrypt.hash(this.password, 10);
-      this.password = hashedPassword;
-    } catch (error) {
-      return next(error as any); // Cast error to 'any' to satisfy TypeScript
-    }
-  }
-  next();
-});
-
-// Define the TypeScript interface for User
-interface IUser extends Document {
-  email: string;
-  password: string;
-  comparePassword(candidatePassword: string): Promise<boolean>;
-}
 
 // Method to compare passwords
 userSchema.methods.comparePassword = async function (candidatePassword: string) {

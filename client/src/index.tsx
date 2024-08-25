@@ -15,7 +15,7 @@ root.render(
 );
 
 // API URL
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:5001/api';
 
 // Helper function to get token from localStorage
 const getToken = () => localStorage.getItem('token');

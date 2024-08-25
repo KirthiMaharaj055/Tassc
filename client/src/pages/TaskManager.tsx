@@ -40,11 +40,18 @@ const TaskManager: React.FC = () => {
     }
   };
 
-  const handleUpdateTask = async (taskId: string, status: string) => {
+  // const handleUpdateTask = (id: string, updatedTask: { title: string; description: string; status: string; dueDate: Date }) => {
+  //   setTasks((prevTasks) =>
+  //     prevTasks.map((task) =>
+  //       task._id === id ? { ...task, ...updatedTask } : task
+  //     )
+  //   );
+  // };
+
+  const handleUpdateTask = async (taskId: string, updatedTask: { title: string; description: string; status: string; dueDate: Date }) => {
     try {
       const task = tasks.find(t => t._id === taskId);
       if (task) {
-        const updatedTask = { ...task, status };
         await updateTask(taskId, updatedTask);
         fetchTasks(); // Refresh task list after update
       }
@@ -89,7 +96,7 @@ const TaskManager: React.FC = () => {
       <table className="task-table">
         <thead>
           <tr>
-            <th>Task Name</th>
+            <th>Title</th>
             <th>Description</th>
             <th>Status</th>
             <th>Due Date</th>
@@ -98,12 +105,12 @@ const TaskManager: React.FC = () => {
         </thead>
         <tbody>
           {tasks.map(task => (
-            <TaskItem 
-              key={task._id} 
-              task={task} 
-              onUpdateStatus={handleUpdateTask} 
-              onDelete={handleDeleteTask} 
-            />
+            <TaskItem
+            key={task._id}
+            task={task}
+            onUpdateTask={handleUpdateTask}
+            onDelete={handleDeleteTask}
+          />
           ))}
         </tbody>
       </table>
